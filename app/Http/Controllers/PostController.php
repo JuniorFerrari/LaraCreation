@@ -11,35 +11,49 @@ class PostController extends Controller
     public function index(){
         $posts = Post::all();
 
-        return view('posts',compact('posts'));
+        return view('post.index',compact('posts'));
     }
 //    Создание постов
     function create(){
-        $postsArr = [
-            [
-                'title' => 'Какая то чушь',
-                'content' => 'текст чуши',
-                'image' => 'чушь.jpeg',
-                'likes' => 99,
-                'is_published' => 1,
-            ]
-        ];
-        foreach ($postsArr as $item){
-
-            Post::create($item);
-        }
-        dd('created');
+        return view('post.create');
     }
-    function update(){
-        $post = Post::find(3);
-        $post->update( [
-            'title' => 'Какая то чушь обновлено',
-            'post_content' => 'текст чуши обновлено',
-            'image' => 'чушь.jpeg обновлено',
-            'likes' => 990,
-            'is_published' => 1,
+
+    function store()
+    {
+        $data = request()->validate([
+            'title' => 'string',
+            'content' => 'string',
+            'image' => 'string',
+
         ]);
-        dd('Чекай бд');
+        Post::create($data);
+        return redirect()->route('post.index');
+    }
+
+    function show(Post $post)
+    {
+        return view('post.show', compact('post'));
+    }
+
+    function edit(Post $post)
+    {
+        return view('post.edit', compact('post'));
+    }
+    function update(Post $post){
+        $data = request()->validate([
+            'title' => 'string',
+            'content' => 'string',
+            'image' => 'string',
+
+        ]);
+        $post->update($data);
+        return redirect()->route('post.show',$post->id);
+    }
+
+    function destroy(Post $post)
+    {
+        $post->delete();
+        return redirect()->route('post.index');
     }
     function delete(){
         $post = Post::find(2);
