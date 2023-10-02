@@ -9,9 +9,9 @@ class PostController extends Controller
 {
 //    Вывод постов
     public function index(){
-        $post = Post::where('is_published', 0)->first();
-        dump($post->title);
-        dd('end');
+        $posts = Post::all();
+
+        return view('posts',compact('posts'));
     }
 //    Создание постов
     function create(){
@@ -34,7 +34,7 @@ class PostController extends Controller
         $post = Post::find(3);
         $post->update( [
             'title' => 'Какая то чушь обновлено',
-            'content' => 'текст чуши обновлено',
+            'post_content' => 'текст чуши обновлено',
             'image' => 'чушь.jpeg обновлено',
             'likes' => 990,
             'is_published' => 1,
@@ -42,7 +42,7 @@ class PostController extends Controller
         dd('Чекай бд');
     }
     function delete(){
-        $post = Post::find(1);
+        $post = Post::find(2);
         $post->delete();
         dd('Поздравляю башен близнецов нет твоя вина');
     }
@@ -77,7 +77,7 @@ class PostController extends Controller
         $posts = Post::updateOrCreate([
             'title' => 'somebody'
         ],[
-            'content' => 'told me',
+            'post_content' => 'told me',
             'image' => 'once.png',
         ]);
         dd('опля');
