@@ -4,21 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\PostTag;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
 //    Вывод постов
-    public function index(){
-        $category = Category::find(2);
-        $post = Post::find(1);
-        dd($post->category);
-
-//        return view('post.index',compact('posts'));
+    public function index()
+    {
+        $posts = Post::all();
+        return view('post.index', compact('posts'));
     }
+
 //    Создание постов
-    function create(){
-        return view('post.create');
+    function create()
+    {
+        $tags = Tag::all();
+        $categories = Category::all();
+
+        return view('post.create',compact('categories','tags'));
     }
 
     function store()
@@ -27,9 +32,17 @@ class PostController extends Controller
             'title' => 'string',
             'content' => 'string',
             'image' => 'string',
+            'category_id' => '',
+            'tags' => '',
 
         ]);
-        Post::create($data);
+        $tags = $data['tags'];
+        unset($data['tags']);
+
+
+        $post = Post::create($data);
+        $post->tags()->attach($tags);
+
         return redirect()->route('post.index');
     }
 
@@ -40,17 +53,29 @@ class PostController extends Controller
 
     function edit(Post $post)
     {
-        return view('post.edit', compact('post'));
+        $tags = Tag::all();
+
+        $categories = Category::all();
+        return view('post.edit', compact('post','categories','tags'));
     }
-    function update(Post $post){
+
+    function update(Post $post)
+    {
+
         $data = request()->validate([
             'title' => 'string',
             'content' => 'string',
             'image' => 'string',
+            'category_id' => '',
+            'tags' => '',
 
         ]);
+        $tags = $data['tags'];
+        unset($data['tags']);
+
         $post->update($data);
-        return redirect()->route('post.show',$post->id);
+        $post->tags()->sync();
+        return redirect()->route('post.show', $post->id);
     }
 
     function destroy(Post $post)
@@ -58,7 +83,9 @@ class PostController extends Controller
         $post->delete();
         return redirect()->route('post.index');
     }
-    function delete(){
+
+    function delete()
+    {
         $post = Post::find(2);
         $post->delete();
         dd('Поздравляю башен близнецов нет твоя вина');
@@ -67,7 +94,7 @@ class PostController extends Controller
     function firstOrCreate()
     {
 
-        $anotherPost=[
+        $anotherPost = [
             'title' => 'somebody',
             'content' => 'once',
             'image' => 'told me.png',
@@ -76,7 +103,7 @@ class PostController extends Controller
         ];
         $posts = Post::firstOrCreate([
             'title' => 'somebody',
-        ],$anotherPost);
+        ], $anotherPost);
         dump($posts->content);
         dd("Опля");
     }
@@ -84,7 +111,7 @@ class PostController extends Controller
     function updateOrCreate()
     {
 //        не в парвильном порядке текст песни
-        $anotherPost=[
+        $anotherPost = [
             'title' => 'somebody',
             'content' => 'once',
             'image' => 'told me.png',
@@ -93,10 +120,23 @@ class PostController extends Controller
         ];
         $posts = Post::updateOrCreate([
             'title' => 'somebody'
-        ],[
+        ], [
             'post_content' => 'told me',
             'image' => 'once.png',
         ]);
         dd('опля');
+    }
+
+    function restore($id)
+    {
+        $post = Post::withTrashed()->find($id);
+        $post->restore();
+        dd($post);
+    }
+
+    function category(Category $category)
+    {
+        $posts = $category->posts;
+        return view('post.index', compact('posts'));
     }
 }

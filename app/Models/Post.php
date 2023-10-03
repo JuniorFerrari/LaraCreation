@@ -20,4 +20,9 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+    function tags()
+    {
+        return $this->belongsToMany(Tag::class,'post_tags','post_id','tag_id');
+    }
 }

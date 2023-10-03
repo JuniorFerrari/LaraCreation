@@ -24,6 +24,7 @@ Route::get('/posts/{post}',[\App\Http\Controllers\PostController::class,'show'])
 Route::get('/posts/{post}/edit',[\App\Http\Controllers\PostController::class,'edit'])->name('post.edit');
 Route::patch('/posts/{post}',[\App\Http\Controllers\PostController::class,'update'])->name('post.update');
 Route::delete('/posts/{post}',[\App\Http\Controllers\PostController::class,'destroy'])->name('post.delete');
+Route::get('posts/{post}/restore',[\App\Http\Controllers\PostController::class,'restore'])->name('post.restore');
 
 
 Route::get('/posts/update',[\App\Http\Controllers\PostController::class,'update']);
@@ -34,4 +35,6 @@ Route::get('/posts/update_or_create',[\App\Http\Controllers\PostController::clas
 Route::get('/main',[\App\Http\Controllers\MainController::class,'index'])->name('main.index');
 Route::get('/contact',[\App\Http\Controllers\ContactController::class,'index'])->name('contact.index');
 Route::get('/about',[\App\Http\Controllers\AboutController::class,'index'])->name('about.index');
+
+Route::get('/categories/{category}',[\App\Http\Controllers\PostController::class,'category'])->name('categories');
 

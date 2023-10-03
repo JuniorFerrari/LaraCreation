@@ -7,7 +7,7 @@
             <th scope="col">#</th>
             <th scope="col">title</th>
             <th scope="col">content</th>
-            <th scope="col">likes</th>
+            <th scope="col">category</th>
         </tr>
         </thead>
         <tbody>
@@ -18,7 +18,7 @@
                 <th scope="row">{{ $post->id }}</th>
                 <td>{{$post->title}}</td>
                 <td>{{$post->content}}</td>
-                <td>{{$post->likes}}</td>
+                <td>{{$post->category->title}}</td>
             </tr>
 
 
