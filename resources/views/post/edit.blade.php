@@ -37,7 +37,7 @@
                 @foreach($tags as $tag)
                     <option
                         @foreach($post->tags as $postTags)
-                        {{ $tag->id === $postTags->id ? ' selected':''}}
+                            {{ $tag->id === $postTags->id ? ' selected':''}}
                         @endforeach
                         value="{{ $tag->id }}">{{ $tag->title }}</option>
                 @endforeach

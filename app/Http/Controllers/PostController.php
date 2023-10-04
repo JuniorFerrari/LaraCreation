@@ -29,9 +29,9 @@ class PostController extends Controller
     function store()
     {
         $data = request()->validate([
-            'title' => 'string',
-            'content' => 'string',
-            'image' => 'string',
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'image' => 'required|string',
             'category_id' => '',
             'tags' => '',
 
@@ -74,7 +74,7 @@ class PostController extends Controller
         unset($data['tags']);
 
         $post->update($data);
-        $post->tags()->sync();
+        $post->tags()->sync($tags);
         return redirect()->route('post.show', $post->id);
     }
 
