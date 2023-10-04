@@ -25,6 +25,9 @@
             </tbody>
     </table>
     <div class="">
+        {{ $posts->links() }}
+    </div>
+    <div class="">
         <a href="{{ route('post.create') }}" class="btn btn-warning mt-3">Создать</a>
     </div>
 </div>
