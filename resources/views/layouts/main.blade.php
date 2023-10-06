@@ -24,7 +24,7 @@
                     <a class="nav-link mx-2 active" aria-current="page" href="{{ url('main') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mx-2" href="{{ url('posts') }}">Posts</a>
+                    <a class="nav-link mx-2" href="{{ route('post.index') }}">Posts</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link mx-2" href="{{ url('contact') }}">Contact</a>
